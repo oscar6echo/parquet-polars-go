@@ -26,7 +26,7 @@ NOTE: The parsing and writing in go is a bit slow.
 
 ## Long
 
-- Write parquet
+- Write parquet sample files containing polars dataframes, one small, one big:
 
 ```sh
 ❯ python write-parquet.py
@@ -162,7 +162,7 @@ required group field_id=-1 schema {
 }
 ```
 
-- Read parquet in go and write other parquet file
+- Read parquet in go and write other parquet file:
 
 ```sh
 ❯ go run ./main.go
@@ -260,7 +260,7 @@ saved in 13.07200645s: sample-big-2.pqt
 
 ```
 
-- Check go produced parquet file is readable by python polars
+- Check go produced parquet file is readable by python polars and the dataframe is the same:
 
 ```sh
 ❯ python read-parquet.py
