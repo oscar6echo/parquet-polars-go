@@ -30,7 +30,7 @@ NOTE: The parsing and writing in go is a bit slow.
 
 ```sh
 ❯ python write-parquet.py
-******************** N=1 filename=sample-small-all-cols.pqt
+******************** N=1 filename=sample-small.pqt
 ----------
 columns:
 [Int32, Utf8, Int64, Boolean, Float64, Datetime(tu='us', tz=None), Date, List(Int64), List(Float64), Struct([Field('name': Utf8), Field('score': Int64)])]
@@ -46,10 +46,10 @@ shape: (2, 10)
 └─────┴────────┴─────┴───────┴─────┴────────────┴───────────┴────────────────┴───────────────┘
 df built in 0.21 s
 
-df saved in 0.00 s: sample-small-all-cols.pqt
+df saved in 0.00 s: sample-small.pqt
 
 ----------
-schema sample-small-all-cols.pqt:
+schema sample-small.pqt:
 <pyarrow._parquet.ParquetSchema object at 0x7f00c933bc80>
 required group field_id=-1 schema {
   optional int32 field_id=-1 idx;
@@ -109,7 +109,7 @@ list_struct: [
   -- child 1 type: int64
 [15,17]]
 
-******************** N=1000000 filename=sample-big-all-cols.pqt
+******************** N=1000000 filename=sample-big.pqt
 ----------
 columns:
 [Int32, Utf8, Int64, Boolean, Float64, Datetime(tu='us', tz=None), Date, List(Int64), List(Float64), Struct([Field('name': Utf8), Field('score': Int64)])]
@@ -132,10 +132,10 @@ shape: (2000000, 10)
 └─────────┴────────┴─────┴───────┴─────┴────────────┴───────────┴────────────────┴───────────────┘
 df built in 4.28 s
 
-df saved in 0.42 s: sample-big-all-cols.pqt
+df saved in 0.42 s: sample-big.pqt
 
 ----------
-schema sample-big-all-cols.pqt:
+schema sample-big.pqt:
 <pyarrow._parquet.ParquetSchema object at 0x7f00c9358980>
 required group field_id=-1 schema {
   optional int32 field_id=-1 idx;
@@ -167,7 +167,7 @@ required group field_id=-1 schema {
 ```sh
 ❯ go run ./main.go
 --------------
-open file sample-small-all-cols.pqt
+open file sample-small.pqt
 --------------
 schema:
 message schema {
@@ -208,7 +208,7 @@ parse schema definition
 start write rows
 saved in 2.472728ms: sample-small-2.pqt
 --------------
-open file sample-big-all-cols.pqt
+open file sample-big.pqt
 --------------
 schema:
 message schema {

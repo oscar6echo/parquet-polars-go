@@ -2,4 +2,4 @@ zzz*
 .py[cod]
 __pycache__
 
-parquet/*-big-*
+parquet/*big*

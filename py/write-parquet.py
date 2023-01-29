@@ -75,8 +75,8 @@ def show_parquet_schema(filename, show_data=False):
 
 
 for N, filename, selection in [
-    (1, "sample-small-all-cols.pqt", [i for i in range(10)]),
-    (1_000_000, "sample-big-all-cols.pqt", [i for i in range(10)]),
+    (1, "sample-small.pqt", [i for i in range(10)]),
+    (1_000_000, "sample-big.pqt", [i for i in range(10)]),
 ]:
     print("*" * 20, f"N={N} filename={filename}")
     df = build_df(N, selection)
