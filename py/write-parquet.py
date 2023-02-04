@@ -28,6 +28,9 @@ def build_df(N=1, selection=[i for i in range(10)]):
         "list_float", [[100.5, 200.1], [115.8, 225.4]] * N, dtype=pl.List(pl.Float64)
     )
     dic_series[9] = pl.Series(
+        "list_str", [["a", "b"], ["x", "y"]] * N, dtype=pl.List(pl.Utf8)
+    )
+    dic_series[10] = pl.Series(
         "list_struct",
         [{"name": "London", "score": 15}, {"name": "Rome", "score": 17}] * N,
         dtype=pl.List(pl.Struct),
@@ -75,8 +78,10 @@ def show_parquet_schema(filename, show_data=False):
 
 
 for N, filename, selection in [
-    (1, "sample-small.pqt", [i for i in range(10)]),
-    (1_000_000, "sample-big.pqt", [i for i in range(10)]),
+    (1, "sample-small-a.pqt", [i for i in range(7)]),
+    (1, "sample-small-b.pqt", [i for i in range(11)]),
+    (500_000, "sample-big-a.pqt", [i for i in range(7)]),
+    (500_000, "sample-big-b.pqt", [i for i in range(11)]),
 ]:
     print("*" * 20, f"N={N} filename={filename}")
     df = build_df(N, selection)

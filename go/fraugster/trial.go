@@ -13,7 +13,7 @@ import (
 	"github.com/fraugster/parquet-go/parquetschema"
 )
 
-func ReadWriteAllCols(filenameIn string, filenameOut string) {
+func Fraugster_ReadWrite(filenameIn string, filenameOut string) {
 	parquetFileIn := "../parquet/" + filenameIn
 	parquetFileOut := "../parquet/" + filenameOut
 
@@ -66,7 +66,7 @@ func ReadWriteAllCols(filenameIn string, filenameOut string) {
 			optional int64 age;
 			optional boolean sex;
 			optional double weight;
-			optional int64 atime;
+			optional int64 atime (TIMESTAMP(MICROS,false));
 			optional int32 adate (Date);
 			optional group list_int (LIST) {
 				repeated group list {
@@ -76,6 +76,11 @@ func ReadWriteAllCols(filenameIn string, filenameOut string) {
 			optional group list_float (LIST) {
 				repeated group list {
 				optional double element;
+				}
+			}
+			optional group list_str (LIST) {
+				repeated group list {
+				optional binary element (String);
 				}
 			}
 			optional group list_struct {
@@ -133,6 +138,7 @@ type record struct {
 	Weight    float64   `parquet:"weight"`
 	Listint   []int64   `parquet:"list_int"`
 	Listfloat []float64 `parquet:"list_float"`
+	Liststr   []string  `parquet:"list_str"`
 
 	Atime  int64 `parquet:"atime"`
 	Atime2 time.Time
@@ -195,41 +201,23 @@ func (r *record) UnmarshalParquet(obj interfaces.UnmarshalObject) error {
 	origin := time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
 	r.Adate2 = origin.AddDate(0, 0, int(adate))
 
-	list_int, err := obj.GetField("list_int").List()
+	listint, err := extractListInt(obj, "list_int")
 	if err != nil {
 		return err
 	}
-	_listint := make([]int64, 0)
-	for list_int.Next() {
-		v1, e1 := list_int.Value()
-		if e1 != nil {
-			return e1
-		}
-		v2, e2 := v1.Int64()
-		if e2 != nil {
-			return e2
-		}
-		_listint = append(_listint, v2)
-	}
-	r.Listint = _listint
+	r.Listint = listint
 
-	list_float, err := obj.GetField("list_float").List()
+	listfloat, err := extractListFloat(obj, "list_float")
 	if err != nil {
 		return err
 	}
-	_listfloat := make([]float64, 0)
-	for list_float.Next() {
-		v1, e1 := list_float.Value()
-		if e1 != nil {
-			return e1
-		}
-		v2, e2 := v1.Float64()
-		if e2 != nil {
-			return e2
-		}
-		_listfloat = append(_listfloat, v2)
+	r.Listfloat = listfloat
+
+	liststr, err := extractListString(obj, "list_str")
+	if err != nil {
+		return err
 	}
-	r.Listfloat = _listfloat
+	r.Liststr = liststr
 
 	list_struct, err := obj.GetField("list_struct").Group()
 	if err != nil {
